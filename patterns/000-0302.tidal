@@ -1,0 +1,7 @@
+d1
+$ every 2 (0.25 ~>)
+$ every 3 (0.125 ~>)
+$ sound "drum*4"
+# crush 8
+# vowel "u"
+# lpf (range 500 1000 rand)
