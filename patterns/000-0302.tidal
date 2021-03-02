@@ -1,7 +1,10 @@
 d1
+$ jux (rev)
 $ every 2 (0.25 ~>)
 $ every 3 (0.125 ~>)
-$ sound "drum*4"
+$ sound "drum(4,8)"
 # crush 8
 # vowel "u"
 # lpf (range 500 1000 rand)
+
+hush
