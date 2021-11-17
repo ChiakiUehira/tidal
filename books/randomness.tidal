@@ -1,0 +1,39 @@
+
+-- rand
+-- Type: rand :: Fractional a => Pattern a
+-- 0.0から1.0の乱数を返す。
+d1 $ s "bd*4" # pan rand
+
+-- あらかじめ加算することで数値を制御できる
+d1 $ s "arpy*4" # speed (rand + 0.5)
+
+-- irand
+-- Type: irand :: Num a => Int -> Pattern a
+-- 0からx-1までの整数の乱数を返す。
+d1 $ s "glitch*4" # n (irand 8)
+
+-- perlin
+-- Type: perlin :: Pattern Double
+-- パーリンノイズを生成する。ランダムの値をスムーズに移動する
+d1 $ sound "bd*32" # speed (perlin + 0.5)
+
+d1 $ sound "bd*32" # speed (slow 4 $ perlin + 0.5)
+
+d1 $ sound "bd*32" # speed (fast 4 $ perlin + 0.5)
+
+
+-- perlinWith
+-- デフォルトのサイクルカウントを使用する代わりに、ランダム値を生成するための入力としてパターンを指定できる
+d1 $ s "arpy*32" # cutoff (perlinWith (saw * 4) * 2000)
+
+-- perlin2
+-- perlin2 カスタムパターンを2番目の次元として指定できるようにすることで2Dノイズを作成します（サイクル番号は最初の次元のままです）。
+d1 $ s "bd*32" # speed (perlin2 (sine*4) + 1)
+
+-- perlin2With
+-- perlin2With.perlinWith2Dノイズに対して2つの関数を提供できることを除いては同じです
+d1
+ $ s "[arpy*32]"
+ # lpf (range 60 5000 $ perlin2With (cosine*2) (sine*2))
+ # lpq 0.3
+

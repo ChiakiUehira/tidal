@@ -1,0 +1,184 @@
+
+-- Fast
+-- サイクル内の時間を引数の分だけ速くする。
+-- fast :: Pattern Time -> Pattern a -> Pattern a
+
+d1 
+  $ fast 2
+  $ sound "bd sn kurt"
+  # vowel "a e o"
+
+d2
+  $ s "sine"
+
+d1 
+  $ sound (fast 2 "bd sn kurt")
+  # fast 3 (vowel "a e o")
+
+d1 $ fast "2 4" $ sound "bd sn kurt cp"
+
+-- FastGap
+-- fastとは違い、繰り返さないがスピードは速くなる。その分のギャップは埋めない。
+-- fastGap :: Pattern Time -> Pattern a -> Pattern a
+
+d1 $ sound (fastGap 2 "bd sn bd bd bd")
+
+-- Slow
+-- fastの逆で引数の分だけ遅くなる。
+-- slow :: Pattern Time -> Pattern a -> Pattern a
+
+d1 $ sound (slow 2 "bd sn kurt")
+   # slow 3 (vowel "a e o")
+
+d1 $ slow "2 4" $ sound "bd sn kurt cp"
+
+-- Hurry
+-- fastと同じように時間は早くなるが、ピッチも高くなる。everyとか組み合わせると変化がでていい感じ。
+-- hurry :: Pattern Time -> Pattern a -> Pattern a
+
+d1 $ every 2 (hurry 2) $ sound "bd*8"
+
+-- slowSqueeze
+-- タイムパターンに複数の値が含まれている場合はタイムパターンの値ごとにゆっくりとしたバージョンのパターンが作られ1つのサイクルの中でそれらがすべて結合される
+-- slowSqueeze :: Pattern Time -> Pattern a -> Pattern a
+
+d1 $ slowSqueeze "2 4" $ s "bd*8"
+
+-- fastSqueeze
+-- 引数に複数のタイムパターンを入れたとき、高速化し、1つのサイクルの中に押し込む
+-- fastSqueeze :: Pattern Time -> Pattern a -> Pattern a
+
+d1 $ fastSqueeze "1 2" $ s "bd sn"
+
+-- compress
+-- 引数に指定した間にパターンを押し込める
+-- compress :: (Time, Time) -> Pattern a -> Pattern a
+
+d1 $ compress (1/4, 3/4) $ s "[bd sn]*2"
+
+d1 $ compress (1/4, 3/4) $ n (run 4) # s "arpy"
+
+-- zoom
+-- 引数に指定した間以外のものをピックアップして1サイクルにする
+-- zoom :: (Time, Time) -> Pattern a -> Pattern a
+
+d1 $ zoom (0.5, 1) $ sound "bd*2 hh*3 [sn bd]*2 drum"
+
+-- within
+-- パターンの一部だけに関数を適応させたいときに使う。everyとかと一緒に使うといい。
+-- Type: within :: Arc -> (Pattern a -> Pattern a) -> Pattern a -> Pattern a
+
+d1 $ within (0, 0.5) (fast 2) $ sound "bd*2 sn lt mt hh hh hh hh"
+
+-- off
+-- [TODO]
+-- Pattern Time -> (Pattern a -> Pattern a) -> Pattern a -> Pattern a
+
+d1 $ off 0.125 (# speed "-4") $ sound "bd [~ sn:2] mt lt*2"
+
+-- rotL
+-- 指定した量だけサイクルをシフトさせます。
+-- rotL :: Time -> Pattern a -> Pattern a -> Pattern a
+
+d1 $ rotL 4 $ s "arpy" <| n (run 16)
+
+-- spin
+-- 指定した数値だけコントロールパターンを同時再生する
+-- spin :: Pattern Int -> ControlPattern -> ControlPattern
+
+d1 $ slow 3 $ spin 4 $ sound "drum*3 tabla:4 [arpy:2 ~ arpy] [can:2 can:3]"
+
+-- weave
+-- 1つのコントロールパターンを、他のコントロールパターンのリストに、連続した時間オフセットで適用する
+-- weave :: Time -> ControlPattern -> [ControlPattern] -> ControlPattern
+
+d1 $ weave 16 (pan sine)
+  [sound "bd sn cp",
+   sound "casio casio:1",
+   sound "[jvbass*2 jvbass:2]/2",
+   sound "hc*4"
+  ]
+
+d1 $ weave 16 (sound "arpy" >| n (run 8))
+  [vowel "a e i",
+   vowel "i [i o] o u",
+   vowel "[e o]/3 [i o u]/2",
+   speed "1 2 3"
+  ]
+
+-- weaveWith
+-- weaveとは違い、コントロールリストではなく機能リストがweaveする
+-- weaveWith :: Time -> Pattern a -> [Pattern a -> Pattern a] -> Pattern a
+
+d1 $ weaveWith 3 (sound "bd [sn drum:2*2] bd*2 [sn drum:1]")
+  [
+    fast 2, 
+    (# speed "0.5"),
+    chop 16
+  ]
+
+-- rev
+-- パターンを逆にする。条件式と一緒に使う。
+-- rev :: Pattern a -> Pattern a
+
+d1 $ every 3 rev $ n "0 1 [~ 2] 3" # sound "arpy"
+
+d1 $ jux rev $ n (iter 4 "0 1 [~ 2] 3") # sound "arpy"
+
+-- jux
+-- 右のチャンネルだけ提供する関数を設定できる。ただ左右に分かれすぎるのでjuxByを使うほうがいい。
+-- jux :: (ControlPattern -> ControlPattern) -> ControlPattern -> ControlPattern
+
+d1 $ slow 32 $ jux (rev) $ striate' 32 (1/16) $ sound "bev"
+
+-- juxBy
+-- 数値を指定することによってチャンネルが中央に近づく
+-- juxBy :: Pattern Double -> (ControlPattern -> ControlPattern) -> ControlPattern -> ControlPattern
+
+d1 $ juxBy 0.5 (fast 2) $ sound "bd sn:1"
+
+-- swingBy
+-- サイクルを第二引数の数値分だけ分割し、サイクルの後半を第一引数の数値分だけ遅らせる
+-- swingBy :: Pattern Time -> Pattern Time -> Pattern a -> Pattern a
+
+d1 $ swingBy 0.1 4 $ sound "hh*8"
+
+-- swing
+-- swingBy (1/3) のエイリアス
+-- swing :: Pattern Time -> Pattern a -> Pattern a
+
+d1 $ swing 2 $ sound "hh*8"
+
+-- ghost
+-- ゴーストノートを適用する
+-- ghost :: Pattern ControlMap -> Pattern ControlMap
+
+d1 $ ghost $ sound "808*8"
+
+-- inside
+-- insideはパターンを分割する。revすると下記の例では"3 2 1 0 7 6 5 4"となる
+-- inside :: Pattern Time -> (Pattern a -> Pattern b) -> Pattern a -> Pattern b
+
+inside 2 rev "0 1 2 3 4 5 6 7"
+
+-- outside
+-- insideの逆
+-- outside :: Pattern Time -> (Pattern a -> Pattern b) -> Pattern a -> Pattern b
+
+d1 $ outside 4 (rev) $ cat [s "bd bd sn",s "sn sn bd", s"lt lt sd", s "sd sd bd"]
+
+-- stut
+-- エコーみたいな機能。深度、フィードバック、時間とも言える3つのパラメータを持っています。深度は整数で、その他は浮動小数点です。
+-- stut :: Pattern Integer -> Pattern Double -> Pattern Rational -> ControlPattern -> ControlPattern
+
+d1 $ stut 10 0.1 0.4 $ sound "bd sn"
+
+-- エコーを反転させることも可能。
+d1 $ stut 4 0.5 (-0.1) $ sound "bd sn"
+
+-- stutWith
+-- 第一引数は繰り返し回数。第二引数はフィードバック。第三引数は関数。
+-- stutWith :: Pattern Int -> Pattern Time -> (Pattern a -> Pattern a) -> Pattern a -> Pattern a
+d1 $ stutWith 10 (1/10) (|+ up 1) $ sound "sine"
+
+

@@ -1,0 +1,144 @@
+
+-- ## XFade
+
+-- xfade
+-- 第一引数にはd1などのトラックを指す。クロスフェードが可能。
+-- xfade :: Show a => a -> ControlPattern -> IO ()
+xfade 1 $ s "arpy*8" # n (run 8)
+
+-- xfadein
+-- xfadeと同様。移行までにかかるサイクルをを指定できる
+-- xfadeIn :: Show a => a -> Time -> ControlPattern -> IO ()
+xfadeIn 1 8 $ s "arpy*8" # n (run 16)
+
+-- ## HistPan
+
+-- histpan
+-- パンが左から右にオーバーライドしていく。第一引数はID。第二引数の数だけ実行するとよい。
+-- histpan :: Show a => a -> Int -> ControlPattern -> IO ()
+
+d1 
+  $ every 4 (# speed 2) 
+  $ loopAt 1
+  $ chop 16 
+  $ "breaks125"
+
+histpan 1 2
+$ s "[bass*16,bd*4]"
+
+-- ## Anticipate
+
+-- anticipate
+-- 8サイクル後にトリガーされるパターンをキューに入れる。IDがかぶるとパターンがおかしくなる。
+-- anticipate :: Time -> [ControlPattern] -> ControlPattern
+
+d1 $ s "arpy*8" # n (run 8)
+
+anticipate 2 $ sound "bd*8" 
+
+-- anticipateIn
+-- 内容はacticipateと一緒だが、トリガーされるサイクル数を指定できる。IDがかぶるとパターンがおかしくなる。
+-- anticipateIn :: Show a => a -> Time -> ControlPattern -> IO ()
+
+d1 $ s "arpy*8" # n (run 8)
+
+anticipateIn 2 2 $ fast 4 $ sound "hh*2" *| gain "0.9 0.6" 
+
+-- ## Clutch
+
+-- clutch
+-- 現在のパターンを劣化させてサイクルから抜いて次に移行する。2サイクルで移行される。
+-- clutch :: Show a => a -> ControlPattern -> IO ()
+
+d1 
+  $ every 4 (# speed 2) 
+  $ loopAt 1
+  $ chop 16 
+  $ "breaks125"
+
+clutch 1
+$ s "[bass*16,bd*4]"
+
+-- clutchIn
+-- clutchと内容は一緒。切り替わるサイクル数を指定できる。
+-- clutchIn :: Show a => a -> Time -> ControlPattern -> IO ()
+
+d1 
+  $ every 4 (# speed 2) 
+  $ loopAt 1
+  $ chop 16 
+  $ "breaks125"
+
+clutchIn 1 4
+$ s "[bass*16,bd*4]"
+
+-- ## Interpolate
+
+-- interpolate
+-- 間を保管しながらスムーズに移行。引数はID。
+-- interpolate :: Time -> [ControlPattern] -> ControlPattern
+
+d1 $ sound "arpy*16" # cutoff 100
+
+interpolate 1 $ sound "arpy*16" # cutoff 16000
+
+-- interpolateIn
+-- 間を保管しながらスムーズに移行。第一引数はID。第二引数はサイクル。
+-- Type: interpolateIn :: Time -> [ControlPattern] -> ControlPattern
+
+d1 $ sound "arpy*16" # cutoff 100
+
+interpolateIn 1 2 $ sound "arpy*16" # cutoff 16000
+
+-- ## Jump
+
+-- jump
+-- 特に普通の切り替えとかわらない。引数にはID。
+-- jump :: Show a => a -> ControlPattern -> IO ()
+
+d1 $ sound "hh*8"
+
+jump 1 $ sound "hh*16"
+
+-- jumpIn
+-- 第一引数はID。第二引数は次のサイクルに入るタイミング。
+-- jumpIn :: Show a => a -> Int -> ControlPattern -> IO ()
+
+d1 $ sound "hh*4"
+
+d2 $ sound "bd"
+
+jumpIn 1 2 $ sound "hh*8"
+
+-- jumpIn'
+-- 第一引数はID。第二引数は次のサイクルに入るタイミング。
+-- jumpIn' :: Show a => a -> Int -> ControlPattern -> IO ()
+
+d1 $ sound "hh*4"
+
+d2 $ sound "bd"
+
+jumpIn' 1 2 $ sound "hh*8"
+
+-- jumpMod
+-- 第一引数はID。第二引数は次のサイクルに入るタイミング。
+-- jumpMod :: Show a => a -> Int -> ControlPattern -> IO ()
+
+d1 $ sound "hh*4"
+
+d2 $ sound "bd"
+
+jumpMod 1 2 $ sound "hh*8"
+
+-- ## Wait
+
+-- wait
+-- 第一引数はID。第二引数分のサイクルを止めてから再開する
+-- wait :: Show a => a -> Time -> ControlPattern -> IO ()
+
+d1 $ sound "hh*4"
+
+wait 1 2 $ sound "bd"
+
+
+

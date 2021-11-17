@@ -3,7 +3,7 @@
 -- 与えられた数字の分だけサンプルを区切る
 -- 空白など違和感があるときはloopAtと一緒に使うとよい
 
-d1 $ loopAt 1 $ chop 2 $ sound "breaks125"
+d1 $ every 2 (hurry 2) $ loopAt 1 $ chop 2 $ sound "breaks125"
 
 d1 $ loopAt 1 $ jux (rev) $ chop 16 $ sound "breaks125"
 
