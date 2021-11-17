@@ -1,0 +1,34 @@
+-- CDEFGAB
+-- cdefgab
+
+once
+  $ s "dropdown"
+
+xfadeIn 1 4
+  $ jux (chop 4)
+  $ midinote "<{c10 e10 b10 a10}, {c12 e12 b12 a12}>"
+  # s "superfork"
+  # room 0.9
+  # size 0.8
+  # gain "0.8"
+  # vowel "o"
+  # lpf (range 500 1000 rand)
+
+d2
+  $ slow 1.25
+  $ n "2 1 3 0" # s "waterdrop"
+  # room "0 0 0 <0.95 0 0 0>"
+  # size 0.95
+  # dry 2
+  # lpf (range 1000 2000 rand)
+  # speed "-0.2"
+
+d3
+  $ every 2 (# delay 0.1)
+  $ s "dropdown/2"
+  # gain 1
+  # room 0.4
+  # size 0.1
+  # lpf (range 500 700 rand)
+
+  hush

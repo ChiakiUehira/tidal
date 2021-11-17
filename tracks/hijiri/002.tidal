@@ -1,0 +1,15 @@
+setcps (140/60/4)
+
+d1
+$ s "bd*4" 
+
+d2
+$ s "bass*16"
+
+d3
+$ s "[jazz:2*16]" # gain 1
+# speed (irand 4)
+
+d4
+$ s "[808:8*16]" # shape 0.2 # gain 0.8
+# speed (irand 4)

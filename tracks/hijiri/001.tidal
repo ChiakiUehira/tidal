@@ -1,0 +1,11 @@
+d1
+  $ jux (chop 1)
+  $ midinote "a14"
+  # s "superfork"
+  # room 1.4
+  # size 0.7
+  # gain "1.5"
+  # vowel "e"
+  # lpf 500
+
+

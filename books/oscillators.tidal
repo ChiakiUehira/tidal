@@ -1,0 +1,26 @@
+
+-- Oscillators 発振回路
+
+-- ## Type of oscillators
+
+d1 $ sound "cp:4*8" # pan sine -- [0 .. 11 .. 0]
+
+d1 $ sound "cp:4*8" # pan cosine -- [1 .. 0 .. 1]
+
+d1 $ sound "cp:4*8" # pan square -- [0 1 0 1]
+
+d1 $ sound "cp:4*8" # pan tri -- [0 .. 1 .. 0 .. 1]
+
+d1 $ sound "cp:4*8" # pan saw -- [0 .. 1, 0 .. 1]
+
+d1 $ sound "cp:4*8" # pan isaw -- [1 .. 0, 1 .. 0]
+
+-- ## Topics
+
+-- rangeと組み合わせば数値の幅を制御できる
+d1 $ s "cp:5*8" # lpf (range 200 5000 $ sine) 
+
+-- オシレーターもパターンなのでslowなどと組み合わせることができます。
+-- ローパスフィルタなどと組み合わせるとDJ的なニュアンスになる
+d1 $ s "cp:5*8" # lpf (slow 4 $ range 200 5000 $ sine) 
+

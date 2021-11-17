@@ -1,2 +1,2 @@
-Server.default.options.outDevice_("Soundflower (2ch)")
+Server.default.options.outDevice_("live-coding")
 SuperDirt.start

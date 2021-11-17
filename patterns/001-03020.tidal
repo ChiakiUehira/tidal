@@ -1,27 +1,29 @@
-setcps (240/60/4)
+setcps (160/60/4)
 
 do
   let
     inverse 1 = 0
     inverse 0 = 1
-    pat = "[1 0 1 0]"
+    pat = "[1 0 1 1 1 0]"
   d1
     $ jux (rev)
     $ sometimesBy 0.4 (# lpf 200)
     $ every 3 (fast "2")
     $ sometimes (rev)
     $ stack [
-      gain pat # s "beep" # gain 0.8 # speed (range 1 4 $ rand),
-      gain (inverse <$> pat) # s "print" # n (irand 10)
+      gain pat # s "bass" # gain 0.8 # speed (range 1 4 $ rand) # speed 4,
+      gain (inverse <$> pat) # s "glitch" # n (irand 10) # speed "0.8" # gain "0.8"
     ]
   d2
     $ jux (rev)
     $ every 2 (# delay 1)
     $ (0.25 ~>)
-    $ gain pat # s "sine" # n (irand 8) # gain 1.2
+    $ gain pat # s "newnotes" # n (irand 8) # gain 0.7
     # size 0.2
   d3
-    $ sound "dropdown" # room 0.2 # gain 1.5
+    $ s "bass:0*4"
+  -- d4
+    -- $ s "[<sine:1 sine:2> sine:2]" # speed "4"
 
 hush
 

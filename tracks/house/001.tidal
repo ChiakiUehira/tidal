@@ -1,0 +1,7 @@
+d1 
+  $ within (0, 0.2) (# speed 2) 
+  $ stack [
+    sound "house*8", 
+    within (0, 0.2) (# speed 4) $ sound "drum*16"
+  ]
+  # n (choose [0, 2, 5, 8])
