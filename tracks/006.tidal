@@ -1,0 +1,8 @@
+d1 
+  $ jux ((1/100) <~)
+  $ slow 2 $ 
+  n (off 0.25 (+12) $ off 0.125 (+7) $ slow 2 "c(3,8) a(3,8,2) f(3,8) e(3,8,4)") 
+  # sound "superpiano"
+  # hpf 1000
+
+d2 $ every 4 (# lpf 2000) $ s "{bd:2*4,hh*8,sn:5*2}"

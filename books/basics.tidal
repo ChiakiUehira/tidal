@@ -21,6 +21,18 @@
 
 fast 2 $ s "bd*4"
 
+-- BPMを設定する
+-- 60は1分を、4はビートを表している
+setcps (130/60/4)
+
+
 -- サイクルをリセットする
 
 resetCycles
+
+-- サイクルを描画する
+
+draw "hh hh*2"
+
+drawLine "hh hh*4"
+

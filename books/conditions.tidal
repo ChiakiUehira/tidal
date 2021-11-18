@@ -1,0 +1,121 @@
+
+-- every
+-- 指定したサイクルごとに関数を実行する
+-- every :: Pattern Int -> (Pattern a -> Pattern a) -> Pattern a -> Pattern a
+
+d1 $ every 3 (# speed 2) $ n "0 1 2 3" # sound "arpy"
+
+-- every'
+-- 指定したサイクルごとに関数を実行する。第二引数はサイクルに加算する。
+--  every' :: Int -> Int -> (Pattern a -> Pattern a) -> Pattern a -> Pattern a
+
+d1 $ every 3 1 (# speed 2) $ n "0 1 2 3" # sound "arpy"
+
+-- foldEvery
+-- 指定したサイクルごとに関数を実行する。配列を渡せる。
+-- foldEvery :: [Int] -> (Pattern a -> Pattern a) -> Pattern a -> Pattern a
+
+d1 $ foldEvery [2, 3] (# speed 2) $ n "0 1 2 3" # sound "arpy"
+
+-- when
+-- 指定した条件がTrueの時だけ関数を実行する
+-- when :: (Int -> Bool) -> (Pattern a -> Pattern a) -> Pattern a -> Pattern a
+
+-- 下記はサイクル番号に4が含まれているときは実行される
+d1 $ when ((elem '4').show) (striate 4) $ sound "hh hc"
+
+-- whenmod
+-- 現在のループ番号を第1パラメータで割った余りが、第2パラメータ以上になったとき、そのパターンに関数を適用する。
+-- whenmod :: Int -> Int -> (Pattern a -> Pattern a) -> Pattern a -> Pattern a
+d1 $ whenmod 6 4 (fast 2) (sound "bd sn kurt")
+
+-- sometimes
+-- 50%の確率で関数が実行される。
+-- sometimes :: (Pattern a -> Pattern a) -> Pattern a -> Pattern a
+d1 $ sometimes (# crush 2) $ n "0 1 [~ 2] 3" # sound "arpy"
+
+{-
+always	100%
+almostAlways	90%
+often	75%
+sometimes	50%
+rarely	25%
+almostNever	10%
+never	0%
+-}
+
+-- sometimesBy
+-- 第一引数に確率を設定することができる
+d1 $ sometimesBy 0.25 (hurry 2) $ s "breaks125"
+
+-- someCyclesBy
+-- sometimesByに似ているが少し違うっぽい。
+d1 $ someCyclesBy 0.25 (hurry 2) $ s "breaks125"
+
+-- choose
+-- 配列の中からランダムで要素を抜き出す
+-- choose :: [a] -> Pattern a
+d1 $ sound "drum ~ drum drum" # n (choose [0,2,3])
+
+-- chooseBy
+-- chooseと似ていますが与えられたパターンを使って要素を選択します。
+-- chooseBy :: Pattern Double -> [a] -> Pattern a
+chooseBy "0 0.25 0.5" ["a","b","c","d"]
+
+-- wchoose
+-- chooseと似ていますが、パターンに重みを付けて選ばられる確率を操作できる
+-- wchoose :: [(a, Double)] -> Pattern a
+d1 $ sound "drum ~ drum drum" # n (wchoose [(0,0.25),(2,0.5),(3,0.25)])
+
+-- struct
+-- t or f のブーリアン指定でリズムパターンを生成します
+-- struct :: Pattern Bool -> Pattern a -> Pattern a
+d1 $ struct ("t ~ t*4 ~") $ sound "bd"
+
+d1 $ struct ("t f t*2 f") $ sound "cp"
+
+-- mask
+-- リズムパターンでマスクする
+-- mask :: Pattern Bool -> Pattern a -> Pattern a
+d1 $ mask "t t t ~ t t ~ t"
+  $ s (cat ["sn*8", "[cp*4 bd*4, bass*5]"])
+  # n (run 8)
+
+-- sew
+-- True/Falseでパターンを切り替える
+-- mask :: Pattern Bool -> Pattern a -> Pattern a
+d1 $ sound (sew "t f t!2 f" "bd*8" "cp*8")
+
+-- ユークリッドで指定することもできます
+d1 $ sew "t(11,16)" (n "0 .. 15" # s "future") (s "cp:3*16" # speed sine + 1.5)
+
+-- stitch
+-- True/Falseのパターンで数値を切り替える
+-- stitch :: Pattern Bool -> Pattern a -> Pattern a -> Pattern a
+d1 $ ccv (stitch "t(7,16)" 127 0) # ccn 0  # "midi"
+
+-- euclid
+-- ユークリッドパターンを作る
+-- euclid :: Pattern Int -> Pattern Int -> Pattern a -> Pattern a
+d1 $ euclid 3 8 $ sound "cp"
+
+-- euclidInv
+-- ユークリッドパターンで作ったものを反転させる
+-- euclidInv :: Pattern Int -> Pattern Int -> Pattern a -> Pattern a
+d1 $ stack [
+  euclid 5 8 $ s "bd",
+  euclidInv 5 8 $ s "hh27"
+]
+
+-- contrast
+-- [TODO]
+-- contrast :: (ControlPattern -> ControlPattern) -> (ControlPattern -> ControlPattern) -> ControlPattern -> ControlPattern -> ControlPattern
+d1 $ contrast (|+ n 12) (|- n 12) (n "c") $ n (run 4) # s "superpiano"
+
+-- ifp
+-- True/Falseで関数を切り替える
+-- ifp :: (Int -> Bool) -> (Pattern a -> Pattern a) -> (Pattern a -> Pattern a) -> Pattern a -> Pattern a
+d1 
+  $ ifp ((== 0).(flip mod 2)) (striate 4) (# coarse "24 48")
+  $ sound "hh hc"
+

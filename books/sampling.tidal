@@ -1,4 +1,8 @@
 
--- finding type signature
+once $ s "drumtraks!4" # n (irand 8)
 
-:t rev
+d1
+$ whenmod 4 3 (within (10/16,1) (<| speed "0.8*16"))
+$ while "f f f t" (# speed 2)
+$ s "[hit*16,popkick:4*4]" # gain 1
+

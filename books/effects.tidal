@@ -1,1 +1,116 @@
 
+
+-- octer
+-- Sonic Piのオクターバー
+d1 $ within (10/16, 1) (# octer 0.8) $ chop 16 $ s "breaks125" 
+
+-- fshift
+-- シンプルな周波数シフター
+d1 $ within (10/16, 1) (# fshift 0.8) $ chop 16 $ s "breaks125" 
+
+-- ring
+-- リングモジュレーター
+d1 $ within (10/16, 1) ((# ring 0.2)) $ chop 16 $ s "breaks125" 
+
+-- tremolodepth/tremolorate
+-- トレモロ
+d1 $ within (10/16, 1) ((# tremolodepth 1).(# tremolorate 1)) $ s "breaks125" 
+
+-- delay/delaytime/delayfeedback
+-- ディレイ
+d1 $ s "sine" # delay 0.2 # delaytime 0.3 # delayfeedback 0.3 
+
+-- leslie/lrate/lsize
+-- レスリースピーカーのエミュレーション
+d1 $ s "sine" # leslie 0.2 # lrate 6.7 # lsize 1
+
+-- phaserrate/phaserdepth
+-- フェーザー
+d1 $ s "sine" # phaserdepth 2 # phaserdepth 2 
+
+-- xsdelay
+-- スペクトラル・ディレイ・コーディング
+d1 $ s "sine" # xsdelay 0.2
+
+d1 $ s "sine" # tsdelay 0.2
+
+-- freeze
+-- マグニチュードを現在のレベルでフリーズし、フレーム間の差に応じて位相を進め、現在のスペクトル品質を維持しようとする。
+d1 $ within (10/16, 1) (# freeze 5) $ chop 16 $ s "breaks125" 
+
+-- attack / hold
+-- デュアルエンベロープジェネレーターモジュール。音が曇って小さくなる。
+d1 $ within (10/16, 1) ((# attack 0.2).(# hold 0.4)) $ chop 16 $ s "breaks125" 
+
+-- legato
+-- 隣り合う2つのシンセ音の重なり具合。
+-- 値が1より小さい（例：0.5）と、音が早く切れてしまい1より大きい値（例：1.5）では音が遅れてカットされる。
+d1 $ chop 16 $ s "breaks125" # legato 0.5
+
+-- djf
+-- DJがよくやるフィルター。音域の前半はローパス、残りはハイパス。
+d1 $ within (10/16, 1) (# djf 0.4) $ chop 16 $ s "breaks125" 
+
+-- lpf / lpq
+-- ローパスフィルター。cutoffでもかける。
+d1 $ within (10/16, 1) ((# lpf 1000) . (# lpq 0.4)) $ chop 16 $ s "breaks125" 
+
+-- hpf / hpq
+-- ハイパスフィルター。
+d1 $ within (10/16, 1) ((# hpf 1000) . (# hpq 0.4)) $ chop 16 $ s "breaks125" 
+
+-- bpf / bpq
+-- バンドパスフィルター。
+d1 $ within (10/16, 1) ((# bpf 1000) . (# bpq 0.4)) $ chop 16 $ s "breaks125" 
+
+-- vowel
+-- 母音のように聞こえるようにするフォルマントフィルター
+d1 $ within (10/16, 1) ((# vowel "a i u e o") . (# hpq 0.4)) $ chop 16 $ s "breaks125" 
+
+-- comb
+-- 歯の数や櫛の幅は、すべて1つの浮動小数点数で制御されている。
+d1 $ within (10/16, 1) ((# comb 0.5) . (# hpq 0.4)) $ chop 16 $ s "breaks125" 
+
+-- hbrick
+-- スペクトルハイパスフィルタ。0からスタートする。
+d1 $ within (10/16, 1) ((# hbrick 0.1) . (# hpq 0.4)) $ chop 16 $ s "breaks125" 
+
+-- lbrick
+-- スペクトルローパスフィルタ。1からスタートする。
+d1 $ within (10/16, 1) ((# lbrick 0.9) . (# hpq 0.4)) $ chop 16 $ s "breaks125" 
+
+-- distort
+-- 歪みをかける。
+d1 $ within (10/16, 1) (# distort 0.8) $ chop 16 $ s "breaks125" 
+
+-- shape
+-- 音圧をあげる。0.4以上に設定すると音量も上がるのでgainと一緒に使う。
+d1 $ within (10/16, 1) (# shape 0.4) $ chop 16 $ s "breaks125" 
+
+-- triode
+-- トリオデのような歪みをかける。
+d1 $ within (10/16, 1) (# triode 0.8) $ chop 16 $ s "breaks125" 
+
+-- squiz
+-- シンプルなピッチ・レイジング・アルゴリズム。潰れた音になる。2の倍数を渡す。
+d1 $ within (10/16, 1) (# squiz 2) $ chop 16 $ s "breaks125" 
+
+
+-- binshift
+-- 音が機械的にゆれる。1以上の設定する。
+d1 $ within (10/16, 1) (# binshift 1) $ chop 16 $ s "breaks125" 
+
+
+-- scram
+-- 音が機械的にゆれる。1以上の設定する。
+d1 $ within (10/16, 1) (# scram 1) $ chop 16 $ s "breaks125" 
+
+
+-- crush
+-- ビットクラッシング効果。大きい数字から設定する。
+d1 $ within (10/16, 1) (# crush 4) $ chop 16 $ s "breaks125" 
+
+-- coarse
+-- 音が荒くなる。
+d1 $ within (10/16, 1) (# coarse 8) $ chop 16 $ s "breaks125" 
+
