@@ -1,8 +1,57 @@
 
-once $ s "drumtraks!4" # n (irand 8)
+--  chop
+-- 与えられた数字の分だけサンプルを区切る
+-- chop :: Pattern Int -> ControlPattern -> ControlPattern
+d1 $ chop 16 $ sound "breaks125"
 
-d1
-$ whenmod 4 3 (within (10/16,1) (<| speed "0.8*16"))
-$ while "f f f t" (# speed 2)
-$ s "[hit*16,popkick:4*4]" # gain 1
+-- loopAt
+-- サンプルを指定されたサイクル数に合わせて再生する
+-- chop :: Pattern Int -> ControlPattern -> ControlPattern
+d1 $ loopAt 20 $ chop 32 $ sound "piano:1" # room 0.6 # size 0.6
+
+-- striate
+-- 与えられた数字の分だけサンプルを区切り、パターンを横断して再生していく
+-- striate :: Pattern Int -> ControlPattern -> ControlPattern
+d1 $ slow 3 $ striate 4 $ sound "breaks125 dropdown"
+
+-- striateBy
+-- [TODO]
+-- striate :: Pattern Int -> ControlPattern -> ControlPattern
+
+-- slice
+-- 与えられた数字の分だけサンプルを区切り、第二引数にパターンを渡すとそのパターンが再生される
+-- サンプルをカットして指定した音でパターンを作りたい時に有効
+-- slice :: Pattern Int -> Pattern Int -> ControlPattern -> ControlPattern
+d1 $ slice 8 "[<0*16 0*4> 3*4 2*4 4*4] [4 .. 7]" $ sound "lo-fi" # legato 1 # shape 0.4
+
+-- splice
+-- 与えられた数字の分だけサンプルを区切り、第二引数にパターンを渡すとそのパターンが再生される
+-- sliceとは違い、ピッチも調整される
+-- splice :: Pattern Int -> Pattern Int -> ControlPattern -> ControlPattern
+d1 $ splice 8 "4 <3 2> 6 7" $ sound "breaks125"
+
+-- randslice
+-- 与えられた数字の分だけサンプルを区切り、1サイクルごとにランダムなピースを再生します。
+-- randslice :: Pattern Int -> ControlPattern -> ControlPattern
+d1 $ fast 4 $ randslice 32 $ sound "bev"
+
+-- chew
+-- 音の再生速度を速くしたり遅くしたり、パターンの切れ目を縮めたりします。
+-- chew :: Int -> Pattern Int -> Pattern a -> Pattern a
+d1 $ chew 4 "0 1*2 2*2 [~ 3]" $ n "0 .. 7" # sound "drum"
+
+-- smash
+-- サンプルを指定されたビット数に切り分け、リストの値に応じて異なる速度でループを再生する間を切ります
+-- smash :: Pattern Int -> [Pattern Time] -> ControlPattern -> ControlPattern
+d1 $ smash 3 [2,3,4] $ sound "ho ho:2 ho:3 hc"
+
+-- smash'
+-- smashですがstriateではなくchopをベースにしています。
+-- smash' :: Int -> [Pattern Time] -> ControlPattern -> ControlPattern
+d1 $ smash' 6 [2,3,4] $ sound "ho ho:2 ho:3 hc"
+
+-- segment
+-- 1サイクルあたりn個のイベントの割合でパターンを「サンプリング」します。連続的なパターンを離散的なものに変えるのに便利です。
+-- segment :: Pattern Time -> Pattern a -> Pattern a
+d1 $ n (slow 2 $ segment 32 $ range 0 32 $ sine) # sound "amencutup"
 
