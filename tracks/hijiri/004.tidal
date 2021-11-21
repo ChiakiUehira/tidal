@@ -1,0 +1,20 @@
+setcps (100/60/4)
+
+xfade 1
+  $ within (10/16, 16) ()
+  $ loopAt 4 
+  $ slice 16 "0..15" 
+  $ s "ambient-loop"
+
+d2 
+  $ s "vocal-feel:1" 
+  # speed "<1 2 3>"
+  # vowel "u"
+  # speed (perlin - 1.0)
+
+d3
+  $ s "violin-noise:1" 
+  # vowel "u"
+  # speed (perlin - 1.0)
+
+once $ s "{violin-noise:01, violin-noise:2}"  # shape 0.4 # room 0.2 # size 0.2
