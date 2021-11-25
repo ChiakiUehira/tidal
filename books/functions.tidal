@@ -32,6 +32,6 @@ d1 $ seqPLoop[
 -- ## Up
 -- サンプルの音程を変化させる。
 
-d1 $ up "0 .. 50" # s "sine" # gain 0.8
+d1 $ n "0 .. 50" # s "sine" # gain 0.8
 
 

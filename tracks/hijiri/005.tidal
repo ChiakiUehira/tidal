@@ -1,0 +1,34 @@
+setcps (170/60/4)
+
+wait 1 1
+  $ every 16 (juxBy 0.4 (0.125 <~))
+  $ loopAt 4 
+  $ chop 16 $ s "drum-loop:0"
+  # shape 0.4
+  -- # gain 0
+
+d2 
+  $ s "computer:0!8"
+  # shape 0.4
+
+wait 3 1
+  $ every 16 (sometimesBy 0.5 (within (0, 1/7) (fast 32 . (# speed 7.8))))
+  $ within (0, 1/7) (fast 16 . (# speed 7.8))
+  $ s "reverse-kick*4"
+  # shape 0.6
+  -- # gain 0
+
+d4
+  $ every 8 (# binshift 0.4)
+  $ s "print*8"
+  # n (irand 8)
+  # shape 0.4
+  -- # gain 0
+
+solo 1
+
+unsolo 1
+
+list
+
+resetCycles

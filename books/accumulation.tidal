@@ -1,0 +1,58 @@
+
+-- overlay
+-- overlay :: Pattern a -> Pattern a -> Pattern a
+-- 2つのパターンを組み合わせます
+
+d1 $ sound (overlay "bd sn:2" "cp*3")
+
+-- 下記と同等
+d1 $ sound "[bd sn:2, cp*3]"
+
+-- stack
+-- stack :: [Pattern a] -> Pattern a
+-- パターンのリストを受け取り、それらを重ね合わせて新しいパターンにします。
+-- ファンクションやシンセのコントロールパターンを複数のパターンに同時に適用したい場合に特に有効です。
+
+d1 $ whenmod 5 3 (striate 3) $ stack [ 
+  sound "bd bd*2", 
+  sound "hh*2 [sn cp] cp future*4", 
+  sound "arpy" +| n "0 .. 15"
+] # speed "[[1 0.8], [1.5 2]*2]/3"
+
+-- superimpose
+-- superimpose :: (Pattern a -> Pattern a) -> Pattern a -> Pattern a
+-- 修正されたバージョンのパターンをオリジナルのパターンの「上」に重ねて演奏します。
+
+d1 $ superimpose (fast 2) $ sound "bd sn [cp ht] hh"
+
+-- 下記と同様
+d1 $ stack [sound "bd sn [cp ht] hh", fast 2 $ sound "bd sn [cp ht] hh"]
+
+-- layer
+-- [a -> Pattern b] -> a -> Pattern b
+-- 1つのパターンに複数の機能を重ねることができる機能です。
+-- パターンのオリジナルバージョンを重ね合わせたい場合は、id機能を使用します。
+
+d1 $ layer [rev, fast 2] $ sound "arpy [~ arpy:4]"
+
+d1 $ layer [id, rev, fast 2] $ sound "arpy [~ arpy:4]"
+
+-- steps
+-- steps :: [(String,String)] -> Pattern String
+-- stepと同じですが、stepのようにペアのリストを受け取り、それらをすべて同時に再生します。
+
+d1 $ s (steps [("cp","x  x x  x x  x"),("bd", "xxxx")])
+
+-- iter
+-- iter :: Pattern Int -> Pattern a -> Pattern a
+-- パターンがずれていく
+
+d1 $ iter 4 $ sound "bd hh sn cp"
+
+-- iter'
+-- iter' :: Pattern Int -> Pattern a -> Pattern a
+-- パターンがずれていく。iterとは逆方向。
+
+d1 $ iter' 4 $ sound "bd hh sn cp"
+
+

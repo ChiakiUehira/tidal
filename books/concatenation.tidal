@@ -1,0 +1,74 @@
+
+-- cat
+-- cat :: [Pattern a] -> Pattern a 
+-- パターンのリストを新しいパターンに連結します
+
+d1 $ cat [sound "bd*2 sn", sound "jvbass*3", sound "drum*2", sound "ht mt"]
+
+
+-- fastcat
+-- fastcat :: [Pattern a] -> Pattern a 
+-- catと同様に動作しますが、1つのサイクルに合わせてすべてのパターンを潰します。
+
+d1 $ fastcat [sound "bd*2 sn", sound "jvbass*3", sound "drum*2", sound "ht mt"]
+
+
+-- timeCat
+-- timeCat :: [(Time, Pattern a)] -> Pattern a 
+-- パターンが1つのサイクルに連結されるときに、お互いに比例したサイズを提供する点が異なります。リストの値が大きければ大きいほど、最終ループでのパターンの相対的なサイズが大きくなります。
+
+d1 $ timeCat [(1, s "bd*4"),
+              (1, s "hh27*8"),
+              (1, s "superpiano" # n 0)]
+
+-- randcat
+-- randcat :: [Pattern a] -> Pattern a 
+-- 与えられたパターンを順番に再生するのではなく、ランダムに選んで再生します。
+
+d1 $ randcat [sound "bd*2 sn", sound "jvbass*3", sound "drum*2", sound "ht mt"]
+
+
+-- append
+-- append :: Pattern a -> Pattern a -> Pattern a
+-- 2つのパターンを組み合わせて新しいパターンを作り、サイクルは1つ目と2つ目のパターンを交互に繰り返す。
+
+d1 $ append (sound "bd*2 sn") (sound "arpy jvbass*2")
+
+-- fastAppend
+-- fastAppend :: Pattern a -> Pattern a -> Pattern a
+-- 2つのパターンのサイクルのペアはそれぞれ1つのサイクルに収まるように潰されます。
+
+d1 $ fastAppend (sound "bd*2 sn") (sound "arpy jvbass*2")
+
+-- wedge
+-- wedge :: Time -> Pattern a -> Pattern a -> Pattern a 
+-- 第1引数には比率を指定します。比率は、パターンサイクルの何パーセントが最初のパターンによって占められるかを決定します。2つ目のパターンは、パターンサイクルの残りの部分を埋めます。
+
+d1 $ wedge (1/4) (sound "bd*2 arpy*3 cp sn*2") (sound "odx [feel future]*2 hh hh")
+
+-- brak
+-- brak :: Pattern a -> Pattern a
+-- パターンをブレイクビーツのような音にします。これは、1サイクルおきに、パターンを半サイクルに合わせて押しつぶし、4分の1サイクル分オフセットさせます。
+
+d1 $ brak $ sound "[feel feel:3, hc:3 hc:2 hc:4 ho:1]"
+
+-- flatpat
+-- flatpat :: Pattern [a] -> Pattern a
+-- リストのパターンを受け取り、各リストのすべてのイベントが同時に起こるパターンにフラット化します。
+
+d1 $ n (flatpat $ listToPat [[0,4,7],[(-12),(-8),(-5)]]) # s "superpiano" # sustain 2
+
+-- run
+-- run :: (Num a, Enum a) => Pattern a -> Pattern a
+-- 0からn-1までの数字のサイクルを表すパターンを生成します。特に、フォルダに入っているサンプルを順番に実行するのに使われます。
+
+d1 $ n (run 8) # sound "amencutup"
+
+d1 $ n (run "<4 8 4 6>") # sound "amencutup"
+
+-- scan
+-- scan :: (Num a, Enum a) => Pattern a -> Pattern a
+-- 最初のサイクルは1から始まり、サイクルごとに数字を追加していき、nに達するまで続けます。
+
+d1 $ n (scan 8) # sound "amencutup"
+

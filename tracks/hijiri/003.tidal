@@ -3,13 +3,15 @@ setcps (140/60/4)
 d1
 $ s "bd*4" 
 
-d2
-$ s "bass*16"
+d5
+$ s "world*16"
 
-d3
+d5
 $ s "[jazz:2*16]" # gain 1
 # speed (irand 4)
 
+d5 $ silence
+
 d4
-$ s "[808:8*16]" # shape 0.2 # gain 0.8
+$ s "[glitch:8*16]" # shape 0.2 # gain 0.8
 # speed (irand 4)
