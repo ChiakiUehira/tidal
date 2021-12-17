@@ -1,0 +1,24 @@
+setcps (120/60/4)
+
+d1
+  $ juxBy 0.2 (rev)
+  $ every 4 (fast 2)
+  $ every 6 (within (0.6, 1) (# speed 2))
+  $ stack [
+    whenmod 16 15 (ply 2)
+    $ every 4 (fast 2)
+    $ s "superchip(3, 8)"
+    # sustain 0.04
+    # n (choose [-1, 1])
+    # speed (range 1 2 perlin)
+    ,
+    s "house*4" 
+    # gain 1.2
+    # shape 0.4
+  ]
+  # shape 0.4
+  # gain 1
+
+d2
+  $ s "synth-loop"
+  # cut 1

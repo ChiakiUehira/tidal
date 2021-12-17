@@ -1,0 +1,36 @@
+setcps (120/60/4)
+
+d1
+  $ whenmod 8 6 (fast 2)
+  $ every 2 (juxBy 0.4 (rev))
+  $ chop 8 
+  $ sound "synth-loop:4" 
+  # cut 1 
+  # shape 0.4 
+  # gain 1 
+  # speed "-1"
+
+d2 
+  $ sound "hh(3, 8)" 
+  # n 0
+
+d3 
+  $ every 8 (fast 2)
+  $ sound "ab*4" 
+  # n 4 
+  # gain 1.2 
+  # shape 0.4
+
+d4
+  $ whenmod 8 6 (within (0.6, 1) (ply 2))
+  $ sound "ab(3, 8)" 
+  # n 10 
+  # gain 1.2 
+  # shape 0.4
+
+d5
+  $ s "ambient-loop"
+  # n 2
+  # cut 1
+  # gain 1.4
+  # shape 0.4

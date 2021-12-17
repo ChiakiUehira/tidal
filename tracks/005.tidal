@@ -1,0 +1,36 @@
+-- BPM:120
+setcps (120/60/4)
+
+d2 $ s "click:2*4" # gain 0.9 # lpf 400
+
+-- ディレイなし
+d1
+  $ slow 2
+  $ s "notes:2 [~ ~ ~ [~ notes:2]] notes:2 ~" # up "0 [0 0 0 -4] -2 0"
+  # pan 0.5
+  # gain 1.1
+
+-- 通常のディレイ
+d1
+  $ ((# delay 0.8).(# delayt (3/16)).(# delayfb 0.2).(# lock 1))
+  $ slow 2
+  $ s "notes:2 [~ ~ ~ [~ notes:2]] notes:2 ~" # up "0 [0 0 0 -4] -2 0"
+  # pan 0.5
+  # gain 1.0
+
+-- ピンポンディレイ
+d1
+  $ stut' 2 (3/16) ((|* gain 0.9).(|> pan (1)))
+  $ stut' 8 (3/8) ((|* gain 0.8).(|> pan (0)))
+  $ slow 2
+  $ s "notes:2 [~ ~ ~ [~ notes:2]] notes:2 ~" # up "0 [0 0 0 -4] -2 0"
+  # pan 0.5
+  # gain 1.1
+
+do
+  resetCyclesTo (-0.05)
+  d1
+    $ every' 8 7 (ply "1 1 1 12" . (|* gain 0.9))
+    $ s "{808sd:11*3,808oh*4}"
+  d2 $ s "~ 909 ~ 909"
+  d3 $ s "superhammond" # n "<d4,e4,a4,cs5>" # sustain 0.2 # voice 1

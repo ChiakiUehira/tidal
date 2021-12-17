@@ -1,0 +1,22 @@
+setcps 1.2
+
+resetCyclesTo (0-0.05)
+
+d1 $ seqP [
+  (0, 64, slow 4 $ sound "lo-fi-synth:1*1 ~" # shape 0.4 # speed "-1" # gain 1 # hpf 100),
+  (4, 64, sound "newnotes:4" # shape 0.6 # up 10 # gain 1),
+  (4, 64, 
+    every 4 
+      (stut' 8 (3/16) ((|* gain 0.9).(|> pan (1)))).
+      (stut' 8 (3/8) ((|* gain 0.8).(|> pan (0)))).
+      (# gain 0.7)
+    $ slow 4
+    $ sound "newnotes:4" # room 0.6 # size 0.4 # up "10" # shape 0.6 # hpf 800 # gain 0
+  ),
+  (8, 44, sound "bd:1(3, 8)" # shape 0.2),
+  (43, 44, every 2 (fast 2) $ sound "gretsch:22!4" # shape 0.4 # gain 1.2),
+  (44, 64, sound "popkick:2(3, 8)" # shape 0.2),
+  (8, 64, slow 2  $ sound "gretsch:13 gretsch:22 ~ <~ gretsch:22>" # shape 0.4 # gain 1),
+  (44, 64, sound "house(3, 8)" # n (irand 8) # shape 0.4)
+]
+

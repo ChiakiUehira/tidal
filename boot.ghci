@@ -1,0 +1,7 @@
+import qualified Sound.Tidal.Tempo as T
+
+:{
+ 
+resetCyclesTo n = T.changeTempo (sTempoMV tidal) (\t tempo -> tempo {T.atTime = t, T.atCycle = n})
+
+:}

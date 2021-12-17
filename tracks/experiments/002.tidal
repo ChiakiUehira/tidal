@@ -7,7 +7,7 @@ d2
 $ s "bass*16"
 
 d3
-$ s "[jazz:2*16]" # gain 1 # speed (irand 4) # up 
+$ s "[jazz:2*16]" # gain 1 # speed (irand 4) 
 
 d4
 $ s "[newnotes:8*16]" # shape 0.2 # gain 0.8
