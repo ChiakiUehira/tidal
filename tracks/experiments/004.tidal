@@ -1,7 +1,6 @@
 setcps (100/60/4)
 
-xfade 1
-  $ within (10/16, 16) ()
+d1
   $ loopAt 4 
   $ slice 16 "0..15" 
   $ s "ambient-loop"
